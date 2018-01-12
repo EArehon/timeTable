@@ -8,6 +8,26 @@
     <meta charset="utf-8">
     <link href="style.css" rel="stylesheet" type="text/css">
     <title>Главная страница</title>
+
+    <script type="text/javascript">
+            function showModalWin() {
+ 
+                var darkLayer = document.createElement('div'); // слой затемнения
+                darkLayer.id = 'shadow'; // id чтобы подхватить стиль
+                document.body.appendChild(darkLayer); // включаем затемнение
+ 
+                var modalWin = document.getElementById('popupWin'); // находим наше "окно"
+                modalWin.style.display = 'block'; // "включаем" его
+                
+
+ 
+                darkLayer.onclick = function () {  // при клике на слой затемнения все исчезнет
+                    darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение
+                    modalWin.style.display = 'none'; // делаем окно невидимым
+                    return false;
+                };
+            }
+    </script>
 </head>
 <body>
     <div id="wrapper">
@@ -25,10 +45,15 @@
                 //setlocale(LC_ALL, 'rus_RUS');123
                 $time = array(0=>"08:30",1=>"10:05",2=>"11:55",3=>"13:40",4=>"15:00",5=>"16:30",6=>"18:00",7=>"19:30");
                 $timeLength = count($time);
+                $day = array(0=>"Понедельник",1=>"Вторник",2=>"Среда",3=>"Четверг",4=>"Пятница",5=>"Суббота");
 
-                
-
-                $dates = new DateTime('2018-01-08');
+               
+               
+               
+               
+                //определяем дату понедельника текущей недели
+                $monday = (string) date("Y-m-d", strtotime("last Monday"));
+                $dates = new DateTime($monday);
                 
                 //создаем массив с датами занятий
                 $date = array();
@@ -37,6 +62,7 @@
                     $dates->add(new DateInterval('P1D'));
                 }
 
+                //загружаем с базы расписание
                 $timeTable = array();
                 for($i = 0; $i < 6; $i++)
                 {
@@ -59,12 +85,11 @@
                 <thead>
                     <tr>
                         <td>&nbsp;</td>
-                        <td>Понедельник</td>
-                        <td>Вторник</td>
-                        <td>Среда</td>
-                        <td>Четверг</td>
-                        <td>Пятница</td>
-                        <td>Суббота</td> 
+                        <?php
+                            for($i = 0; $i < 6; $i++){
+                                echo '<td>'.$day[$i].'<br>('.$date[$i].')</td>';
+                            }
+                        ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,9 +110,8 @@
                                 }
                                 else
                                 {
-                                    //echo '<td class="empty" ondblclick="alert(\'Клик!\')">';
-                                    echo '<td class="empty" ondblclick="alert(\''.$date[$j].' '.$time[$i].'\')">';
-                                        //echo 'yps';   onclick="alert('Клик!')"
+                                    //echo '<td class="empty" ondblclick="alert(\''.$date[$j].' '.$time[$i].'\')">';
+                                    echo '<td class="empty" ondblclick="showModalWin()">';
                                     echo '</td>';
                                 }
                                 
@@ -99,6 +123,19 @@
                     ?>
                 </tbody>
             </table>
+
+            <div style="text-align: center" id="popupWin" class="modalwin">
+                <h2 id="tratata"> Какая-то форма </h2>
+                <form>
+                    <input value="text">
+                    <input type="button" value="OK">
+                </form>
+                <hr>
+                <h2> Какой-то текст </h2>
+                <br> <p> УРа!!!!!!!!!! </p>
+                <hr>
+            </div>
+
         </main>
     </div>
 </body>
