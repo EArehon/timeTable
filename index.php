@@ -22,7 +22,7 @@
                     echo '<pre>';print_r($what);echo '</pre>';
                 }
 
-                //setlocale(LC_ALL, 'rus_RUS');
+                //setlocale(LC_ALL, 'rus_RUS');123
                 $time = array(0=>"08:30",1=>"10:05",2=>"11:55",3=>"13:40",4=>"15:00",5=>"16:30",6=>"18:00",7=>"19:30");
                 $timeLength = count($time);
 
