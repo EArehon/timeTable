@@ -10,7 +10,8 @@
     <title>Главная страница</title>
 
     <script type="text/javascript">
-            function showModalWin() {
+            function showModalWin(a, b) {
+                //alert(a + " " + b);
  
                 var darkLayer = document.createElement('div'); // слой затемнения
                 darkLayer.id = 'shadow'; // id чтобы подхватить стиль
@@ -18,9 +19,8 @@
  
                 var modalWin = document.getElementById('popupWin'); // находим наше "окно"
                 modalWin.style.display = 'block'; // "включаем" его
-                
+                document.getElementById('atata').value = a + " " + b;
 
- 
                 darkLayer.onclick = function () {  // при клике на слой затемнения все исчезнет
                     darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение
                     modalWin.style.display = 'none'; // делаем окно невидимым
@@ -48,11 +48,15 @@
                 $day = array(0=>"Понедельник",1=>"Вторник",2=>"Среда",3=>"Четверг",4=>"Пятница",5=>"Суббота");
 
                
-               
-               
-               
+
                 //определяем дату понедельника текущей недели
-                $monday = (string) date("Y-m-d", strtotime("last Monday"));
+                if(date("w") != 1){
+                    $monday = (string) date("Y-m-d", strtotime("last Monday"));
+                }
+                else{
+                    $monday = (string) date("Y-m-d");
+                }
+                
                 $dates = new DateTime($monday);
                 
                 //создаем массив с датами занятий
@@ -111,7 +115,7 @@
                                 else
                                 {
                                     //echo '<td class="empty" ondblclick="alert(\''.$date[$j].' '.$time[$i].'\')">';
-                                    echo '<td class="empty" ondblclick="showModalWin()">';
+                                    echo '<td class="empty" ondblclick="showModalWin(\''.$date[$j].'\', \''.$time[$i].'\')">';
                                     echo '</td>';
                                 }
                                 
@@ -127,7 +131,7 @@
             <div style="text-align: center" id="popupWin" class="modalwin">
                 <h2 id="tratata"> Какая-то форма </h2>
                 <form>
-                    <input value="text">
+                    <input type="text" value="" id="atata">
                     <input type="button" value="OK">
                 </form>
                 <hr>

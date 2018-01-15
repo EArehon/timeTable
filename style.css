@@ -12,6 +12,7 @@ header{
     background-image: url(images/header.jpg);
     border-radius: 5px 5px 0 0;
     margin-bottom: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 
 main{
@@ -20,6 +21,7 @@ main{
     background: white;
     color: #333;
     padding-bottom: 1px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 
 main h2{
