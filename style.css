@@ -3,7 +3,7 @@ body{
 }
 
 #wrapper{
-    width: 1200px;
+    width: 1100px;
     margin: 0 auto;
 }
 header{
@@ -12,7 +12,7 @@ header{
     background-image: url(images/header.jpg);
     border-radius: 5px 5px 0 0;
     margin-bottom: 15px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    /* /box-shadow: 0 0 15px rgba(0,0,0,0.3); */
 }
 
 main{
@@ -44,12 +44,15 @@ th, td{
     padding: 10px;
 }
 
+.columDate{
+    width: 15%;
+}
+
 .timeTable thead{
     font-weight: bold;
 }
 
 .modalwin { 
-    height: 200px;  
     width: 300px;
     border: 3px outset gray; 
     background: wheat;

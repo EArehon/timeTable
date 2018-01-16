@@ -1,7 +1,22 @@
-﻿<?php 
+<?php 
     require 'db.php';
-?>
 
+    $data = $_POST;
+
+    if(isset($data['addTime'])){
+        $schedule = R::dispense('schedule');
+
+        $schedule->date = $data['dateTime'];
+        $schedule->lecturer = $data['FIO'];
+        $schedule->group = $data['group'];
+        $schedule->subject = $data['subject'];
+        $schedule->id_room = $data['room'];
+
+        R::store($schedule);
+
+        header("Location: ".$_SERVER['PHP_SELF']);
+    }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +25,7 @@
     <title>Главная страница</title>
 
     <script type="text/javascript">
-            function showModalWin(a, b) {
-                //alert(a + " " + b);
+            function showModalWin(date, time) {
  
                 var darkLayer = document.createElement('div'); // слой затемнения
                 darkLayer.id = 'shadow'; // id чтобы подхватить стиль
@@ -19,8 +33,9 @@
  
                 var modalWin = document.getElementById('popupWin'); // находим наше "окно"
                 modalWin.style.display = 'block'; // "включаем" его
-                document.getElementById('atata').value = a + " " + b;
+                document.getElementById('dateTime').value =  date + " " + time;
 
+ 
                 darkLayer.onclick = function () {  // при клике на слой затемнения все исчезнет
                     darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение
                     modalWin.style.display = 'none'; // делаем окно невидимым
@@ -42,21 +57,36 @@
                     echo '<pre>';print_r($what);echo '</pre>';
                 }
 
-                //setlocale(LC_ALL, 'rus_RUS');123
+                
+                //выводим корпуса и аудитории
+                $corps =  R::getAll( 'SELECT * FROM corps' );
+
+                foreach($corps as $corp){
+                    echo $corp['name'].'<br>';
+                    $classRoom = R::find('classroom',' id_corps LIKE ?', array($corp['id']));
+                    foreach($classRoom as $room){
+                        echo '<a href="index.php?room='.$room['id'].'">'.$room['room'].'</a> ';
+                    }
+                    echo '<br>';
+                }
+
+
+                //создаем массив с днями недели и расписанием звонков
                 $time = array(0=>"08:30",1=>"10:05",2=>"11:55",3=>"13:40",4=>"15:00",5=>"16:30",6=>"18:00",7=>"19:30");
                 $timeLength = count($time);
                 $day = array(0=>"Понедельник",1=>"Вторник",2=>"Среда",3=>"Четверг",4=>"Пятница",5=>"Суббота");
 
                
-
+               
+               
+               
                 //определяем дату понедельника текущей недели
-                if(date("w") != 1){
+                if(date("w")!=1){
                     $monday = (string) date("Y-m-d", strtotime("last Monday"));
                 }
                 else{
                     $monday = (string) date("Y-m-d");
                 }
-                
                 $dates = new DateTime($monday);
                 
                 //создаем массив с датами занятий
@@ -66,12 +96,25 @@
                     $dates->add(new DateInterval('P1D'));
                 }
 
+                //проверяем по какой аудитории будем выбирать расписание
+                if(!isset($_GET['room'])){
+                    $idRoom = 1;
+                }
+                else{
+                    $idRoom = $_GET['room'];
+                }
+                
                 //загружаем с базы расписание
                 $timeTable = array();
                 for($i = 0; $i < 6; $i++)
-                {
-                    $needles = R::find('schedule',' date LIKE ?', array($date[$i].'%'));
-
+                {   
+                    //$sql = 'SELECT * FROM schedule WHERE id_room=\''.$idRoom.'\' AND date LIKE \''.$date[$i].'%\'';
+                    //needles = R::getAll('SELECT * FROM schedule WHERE id_room=\''.$idRoom.'\' AND date LIKE \''.$date[$i].'%\'');
+                    //$needles =  R::getAll( 'SELECT * FROM schedule WHERE id_room='.$idRoom);
+                    //$needles = R::find('schedule',' date LIKE ?', array($date[$i].'%'));
+                    $needles = R::find('schedule',' id_room=\''.$idRoom.'\' AND date LIKE ?', array($date[$i].'%'));
+                    //dump($needles);
+                    //echo $sql.'<br>';
                     foreach($needles as $nedl)
                     {
                         //проверяем на какое время записано занятие и ищем индекс в массиве с расписанием звонков
@@ -91,7 +134,7 @@
                         <td>&nbsp;</td>
                         <?php
                             for($i = 0; $i < 6; $i++){
-                                echo '<td>'.$day[$i].'<br>('.$date[$i].')</td>';
+                                echo '<td class="columDate">'.$day[$i].'<br>('.$date[$i].')</td>';
                             }
                         ?>
                     </tr>
@@ -114,14 +157,10 @@
                                 }
                                 else
                                 {
-                                    //echo '<td class="empty" ondblclick="alert(\''.$date[$j].' '.$time[$i].'\')">';
                                     echo '<td class="empty" ondblclick="showModalWin(\''.$date[$j].'\', \''.$time[$i].'\')">';
                                     echo '</td>';
                                 }
-                                
-
                             }
-                            
                             echo '</tr>';
                         }
                     ?>
@@ -129,15 +168,19 @@
             </table>
 
             <div style="text-align: center" id="popupWin" class="modalwin">
-                <h2 id="tratata"> Какая-то форма </h2>
-                <form>
-                    <input type="text" value="" id="atata">
-                    <input type="button" value="OK">
+                <form action="<?php echo $_SERVER["PHP_SELF"]?>" name="timeAddForm" method="POST">
+                    <p>FIO</p>
+                    <input type="text" id="FIO" name="FIO" required>
+                    <p>Group</p>
+                    <input type="text" id="group" name="group" required>
+                    <p>Subject</p>
+                    <input type="text" id="subject" name="subject" required>
+                    <p>Time</p>
+                    <input type="text" id="dateTime" name="dateTime" readonly>
+                    <input type="hidden" name="room" value="<?php echo $idRoom;?>">
+                    <br>
+                    <input type="submit" value="Добавить" name="addTime">
                 </form>
-                <hr>
-                <h2> Какой-то текст </h2>
-                <br> <p> УРа!!!!!!!!!! </p>
-                <hr>
             </div>
 
         </main>
