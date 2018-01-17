@@ -51,25 +51,33 @@
         
         </header>
 
+        <nav>
+            <?php
+                $corps =  R::getAll( 'SELECT * FROM corps' );
+                echo '<ul>';
+                foreach($corps as $corp){
+                    echo '<li><a href="#">'.$corp['name'].'</a>';
+                    echo '<ul>';
+                    $classRoom = R::find('classroom',' id_corps LIKE ?', array($corp['id']));
+                    foreach($classRoom as $room){
+                        echo '<li><a href="index.php?room='.$room['id'].'">'.$room['room'].'</a></li>';
+                    }
+                    echo '</ul>';
+                    echo '</li>';
+                }
+                echo '</ul>';
+            ?>
+
+            <ul id="authorization">
+                <li><a href="#">Вход</a></li>
+            </ul>
+        </nav>
+
         <main>
             <?php  
                 function dump($what){
                     echo '<pre>';print_r($what);echo '</pre>';
                 }
-
-                
-                //выводим корпуса и аудитории
-                $corps =  R::getAll( 'SELECT * FROM corps' );
-
-                foreach($corps as $corp){
-                    echo $corp['name'].'<br>';
-                    $classRoom = R::find('classroom',' id_corps LIKE ?', array($corp['id']));
-                    foreach($classRoom as $room){
-                        echo '<a href="index.php?room='.$room['id'].'">'.$room['room'].'</a> ';
-                    }
-                    echo '<br>';
-                }
-
 
                 //создаем массив с днями недели и расписанием звонков
                 $time = array(0=>"08:30",1=>"10:05",2=>"11:55",3=>"13:40",4=>"15:00",5=>"16:30",6=>"18:00",7=>"19:30");
@@ -190,7 +198,7 @@
                         </div>
                         <div class="tableFormRow">
                             <div class="tableFormCell"></div>
-                            <div class="tableFormCell"><input type="submit" value="Добавить" name="addTime"></div>
+                            <div class="tableFormCell"><input type="submit" class="btn" value="Добавить" name="addTime"></div>
                         </div>
                     </div>
                     <input type="hidden" name="room" value="<?php echo $idRoom;?>">
