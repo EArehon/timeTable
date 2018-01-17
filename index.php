@@ -14,7 +14,7 @@
 
         R::store($schedule);
 
-        header("Location: ".$_SERVER['PHP_SELF']);
+        header("Location: ".$_SERVER['PHP_SELF'].'?room='.$data['room']);
     }
 ?>
 <!DOCTYPE html>
@@ -168,18 +168,32 @@
             </table>
 
             <div style="text-align: center" id="popupWin" class="modalwin">
+                <H2 class="textLeft">Бронирование аудитории</H3>
+                <hr>
                 <form action="<?php echo $_SERVER["PHP_SELF"]?>" name="timeAddForm" method="POST">
-                    <p>FIO</p>
-                    <input type="text" id="FIO" name="FIO" required>
-                    <p>Group</p>
-                    <input type="text" id="group" name="group" required>
-                    <p>Subject</p>
-                    <input type="text" id="subject" name="subject" required>
-                    <p>Time</p>
-                    <input type="text" id="dateTime" name="dateTime" readonly>
+                    <div class="tableForm">
+                        <div class="tableFormRow">
+                            <div class="tableFormCell"><label for="FIO">ФИО</label> </div>
+                            <div class="tableFormCell"><input type="text" class="inputText" id="FIO" name="FIO" placeholder="ФИО преподавателя" required></div>
+                        </div>
+                        <div class="tableFormRow">
+                            <div class="tableFormCell"> <label for="group">Группа</label> </div>
+                            <div class="tableFormCell"><input type="text" class="inputText" id="group" name="group" placeholder="Учебная группа" required></div>
+                        </div>
+                        <div class="tableFormRow">
+                            <div class="tableFormCell"> <label for="subject">Дисциплина</label> </div>
+                            <div class="tableFormCell"><input type="text" class="inputText" id="subject" name="subject" placeholder="Дисциплина" required></div>
+                        </div>
+                        <div class="tableFormRow">
+                            <div class="tableFormCell"> <label for="dateTime">Время</label> </div>
+                            <div class="tableFormCell "><input type="text" class="inputText" id="dateTime" name="dateTime" readonly></div>
+                        </div>
+                        <div class="tableFormRow">
+                            <div class="tableFormCell"></div>
+                            <div class="tableFormCell"><input type="submit" value="Добавить" name="addTime"></div>
+                        </div>
+                    </div>
                     <input type="hidden" name="room" value="<?php echo $idRoom;?>">
-                    <br>
-                    <input type="submit" value="Добавить" name="addTime">
                 </form>
             </div>
 
