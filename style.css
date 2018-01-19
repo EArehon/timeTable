@@ -43,7 +43,8 @@ main h2{
 }
 
 .signOut{
-    
+    border: none;
+    background: none;
 }
 
 .timeTable{

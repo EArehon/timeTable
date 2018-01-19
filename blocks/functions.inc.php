@@ -23,13 +23,13 @@
     function printMenuAut(){
         echo '<ul id="authorization">';
         if(isset($_SESSION['logged_user'])){
-            echo '<li><a href="index.php?action=authorization">Выйти</a></li>';
+            echo '<li><a href="#" onclick="document.getElementById(\'formSignOut\').submit();">Выйти</a></li>';
+            echo '<form action="index.php?action=authorization" id="formSignOut" method="POST">';
+            echo '<input type="hidden" name="signOut" value="Выйти" class="signOut">';
+            echo '</form>';
         }    
         else{
             echo '<li><a href="index.php?action=authorization">Войти</a></li>';
-            //echo '<li><form action="index.php?action=authorization" method="POST">';
-            //echo '<input type="submit" name="signOut" value="Выйти" class="signOut">';
-            //echo '<form></li>';
         }
         echo '</ul>';
     }
@@ -95,8 +95,12 @@
                 }
                 else
                 {
-                    echo '<td class="empty" ondblclick="showModalWin(\''.$date[$j].'\', \''.$time[$i].'\')">';
-                    echo '</td>';
+                    if(isset($_SESSION['logged_user'])){
+                        echo '<td class="empty" ondblclick="showModalWin(\''.$date[$j].'\', \''.$time[$i].'\')"></td>';
+                    }
+                    else{
+                        echo '<td>&nbsp;</td>';
+                    }
                 }
             }
             echo '</tr>';
