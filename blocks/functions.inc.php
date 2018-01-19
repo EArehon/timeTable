@@ -20,6 +20,20 @@
         echo '</ul>';
     }
 
+    function printMenuAut(){
+        echo '<ul id="authorization">';
+        if(isset($_SESSION['logged_user'])){
+            echo '<li><a href="index.php?action=authorization">Выйти</a></li>';
+        }    
+        else{
+            echo '<li><a href="index.php?action=authorization">Войти</a></li>';
+            //echo '<li><form action="index.php?action=authorization" method="POST">';
+            //echo '<input type="submit" name="signOut" value="Выйти" class="signOut">';
+            //echo '<form></li>';
+        }
+        echo '</ul>';
+    }
+
     //вывод таблицы с расписанием
     function shedule($idRoom, $dateMonday){
         global $time;
@@ -39,8 +53,7 @@
         {   
             $needles = R::find('schedule',' id_room=\''.$idRoom.'\' AND date LIKE ?', array($date[$i].'%'));
 
-            foreach($needles as $nedl)
-            {
+            foreach($needles as $nedl){
                 //проверяем на какое время записано занятие и ищем индекс в массиве с расписанием звонков
                 $idTime = array_search(date("H:i", strtotime($nedl->date)), $time);
 

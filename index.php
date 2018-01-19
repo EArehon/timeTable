@@ -17,7 +17,12 @@
 
         header("Location: ".$_SERVER['PHP_SELF'].'?room='.$data['room']);
     }
+    
+    if( isset($data['signIn']) or  isset($data['signOut'])){
+        include('blocks/authorization.inc.php');
+    }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,48 +61,60 @@
         <nav>
             <?php
                 printMenu();
+
+                printMenuAut();
             ?>
-            <ul id="authorization">
-                <li><a href="#">Вход</a></li>
-            </ul>
         </nav>
 
         <main>
             <?php  
-                //создаем массив с днями недели и расписанием звонков
-                $time = array(0=>"08:30",1=>"10:05",2=>"11:55",3=>"13:40",4=>"15:00",5=>"16:30",6=>"18:00",7=>"19:30");
-                $timeLength = count($time);
-                $day = array(0=>"Понедельник",1=>"Вторник",2=>"Среда",3=>"Четверг",4=>"Пятница",5=>"Суббота");
-                
-                //проверяем по какой аудитории будем выбирать расписание
-                if(!isset($_GET['room'])){
-                    $idRoom = 1;
+                if(isset($_SESSION['logged_user'])){
+                    echo 'Авторизация выполнена. Пользователь: '.$_SESSION['logged_user']->login;
                 }
                 else{
-                    $idRoom = $_GET['room'];
+                    echo "Вход не выполнен.";
                 }
 
-                //определяем дату понедельника текущей недели
-                if(date("w")!=1){
-                    $monday = (string) date("Y-m-d", strtotime("last Monday"));
+                if(isset($_GET['action'])){
+                    include('blocks/authorization.form.php');
                 }
                 else{
-                    $monday = (string) date("Y-m-d");
+                    
+                    echo '<form action="index.php?action=authorization" method="POST">';
+                    echo '<input type="submit" name="signOut" value="Выйти" class="signOut">';
+                    echo '</form>';
+
+                    //создаем массив с днями недели и расписанием звонков
+                    $time = array(0=>"08:30",1=>"10:05",2=>"11:55",3=>"13:40",4=>"15:00",5=>"16:30",6=>"18:00",7=>"19:30");
+                    $timeLength = count($time);
+                    $day = array(0=>"Понедельник",1=>"Вторник",2=>"Среда",3=>"Четверг",4=>"Пятница",5=>"Суббота");
+                    
+                    //проверяем по какой аудитории будем выбирать расписание
+                    if(!isset($_GET['room'])){
+                        $idRoom = 1;
+                    }
+                    else{
+                        $idRoom = $_GET['room'];
+                    }
+
+                    //определяем дату понедельника текущей недели
+                    if(date("w")!=1){
+                        $monday = (string) date("Y-m-d", strtotime("last Monday"));
+                    }
+                    else{
+                        $monday = (string) date("Y-m-d");
+                    }
+                    $date = new DateTime($monday);
+
+
+                    print "<h2>Текущая неделя</h2>";
+                    shedule($idRoom, $date);
+
+                    //$nextWeek = new DateTime($monday);
+                    //$nextWeek->add(new DateInterval('P7D'));
+                    //print "<h2>Следующая неделя</h2>";
+                    //shedule($idRoom, $nextWeek);
                 }
-                $date = new DateTime($monday);
-
-
-                print "<h2>Текущая неделя</h2>";
-                shedule($idRoom, $date);
-
-                //$nextWeek = new DateTime($monday);
-                //$nextWeek->add(new DateInterval('P7D'));
-                //print "<h2>Следующая неделя</h2>";
-                //shedule($idRoom, $nextWeek);
-                
-                
-                
-                
             ?>
         </main>
     </div>

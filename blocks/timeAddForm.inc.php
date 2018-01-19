@@ -1,5 +1,5 @@
             <div style="text-align: center" id="popupWin" class="modalwin">
-                <H2 class="textLeft">Бронирование аудитории</H3>
+                <H2 class="textLeft">Бронирование аудитории</H2>
                 <hr>
                 <form action="<?php echo $_SERVER["PHP_SELF"]?>" name="timeAddForm" method="POST">
                     <div class="tableForm">

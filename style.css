@@ -38,6 +38,14 @@ main h2{
     text-align: center;
 }
 
+.divAut{
+    padding: 15px;
+}
+
+.signOut{
+    
+}
+
 .timeTable{
     margin: 0 auto;
     width: 95%;
