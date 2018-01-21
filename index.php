@@ -49,6 +49,11 @@
                     return false;
                 };
             }
+
+            function showDeletLayer(){
+                var deleteLayer = document.getElementById('deleteTime');
+                deleteLayer.style.display = 'block';
+            }
     </script>
 </head>
 <body>
@@ -68,14 +73,7 @@
 
         <main>
             <?php  
-                if(isset($_SESSION['logged_user'])){
-                    echo 'Авторизация выполнена. Пользователь: '.$_SESSION['logged_user']->login;
-                }
-                else{
-                    echo "Вход не выполнен.";
-                }
-
-                if(isset($_GET['action'])){
+               if(isset($_GET['action'])){
                     include('blocks/authorization.form.php');
                 }
                 else{

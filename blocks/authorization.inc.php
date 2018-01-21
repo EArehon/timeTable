@@ -24,8 +24,8 @@
         }
     }
 
-    //if( isset($data['signOut']) ){
-    //    unset($_SESSION['logged_user']);
-    //    header("LOCATION: {$_SERVER['PHP_SELF']}");
-    //}
+    if( isset($data['signOut']) ){
+        unset($_SESSION['logged_user']);
+        header("LOCATION: {$_SERVER['PHP_SELF']}");
+    }
 ?>

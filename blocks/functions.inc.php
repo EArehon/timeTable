@@ -87,7 +87,8 @@
             {
                 if($timeTable[$i][$j] != null)
                 {
-                    echo '<td>';
+                    echo '<td class="tdTable">';
+                    echo '<div class="deleteTime" id="deleteTime"></div>';
                     echo $timeTable[$i][$j]->lecturer.'<br>';
                     echo $timeTable[$i][$j]->group.'<br>';
                     echo $timeTable[$i][$j]->subject;
@@ -110,6 +111,13 @@
             </tbody>
             </table>
         ";
+
+        if(isset($_SESSION['logged_user'])){
+            echo '<div class="editMenu">';
+            echo '<button class="btn changeBtn" onclick="showDeletLayer();">Изменить</button>';
+            echo '<button class="btn">Удалить</button>';
+            echo '</div>';
+        }
 
         include('blocks/timeAddForm.inc.php');
     }
