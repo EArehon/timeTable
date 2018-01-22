@@ -63,7 +63,7 @@
         }
 
         print "
-            <table class=\"timeTable\">
+            <table class=\"timeTable\" id=\"timeTable\">
             <thead>
                 <tr>
                     <td>&nbsp;</td>
@@ -88,7 +88,8 @@
                 if($timeTable[$i][$j] != null)
                 {
                     echo '<td class="tdTable">';
-                    echo '<div class="deleteTime" id="deleteTime"></div>';
+                    echo '<div class="editLayers deleteTime" style="display: none;"></div>';
+                    echo '<div class="editLayers changeTime"></div>';
                     echo $timeTable[$i][$j]->lecturer.'<br>';
                     echo $timeTable[$i][$j]->group.'<br>';
                     echo $timeTable[$i][$j]->subject;
@@ -114,8 +115,9 @@
 
         if(isset($_SESSION['logged_user'])){
             echo '<div class="editMenu">';
-            echo '<button class="btn changeBtn" onclick="showDeletLayer();">Изменить</button>';
-            echo '<button class="btn">Удалить</button>';
+            echo '<button class="btn changeBtn" onclick="showLayer(\'changeTime\');">Изменить</button>';
+            echo '<button class="btn deleteBtn" onclick="showLayer(\'deleteTime\');">Удалить</button>';
+            echo '<button class="btn" onclick="cancel();">Отмена</button>';
             echo '</div>';
         }
 

@@ -31,30 +31,7 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <title>Расписание компьютерных лабораторий БрГУ</title>
 
-    <script type="text/javascript">
-            function showModalWin(date, time) {
- 
-                var darkLayer = document.createElement('div'); // слой затемнения
-                darkLayer.id = 'shadow'; // id чтобы подхватить стиль
-                document.body.appendChild(darkLayer); // включаем затемнение
- 
-                var modalWin = document.getElementById('popupWin'); // находим наше "окно"
-                modalWin.style.display = 'block'; // "включаем" его
-                document.getElementById('dateTime').value =  date + " " + time;
-
- 
-                darkLayer.onclick = function () {  // при клике на слой затемнения все исчезнет
-                    darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение
-                    modalWin.style.display = 'none'; // делаем окно невидимым
-                    return false;
-                };
-            }
-
-            function showDeletLayer(){
-                var deleteLayer = document.getElementById('deleteTime');
-                deleteLayer.style.display = 'block';
-            }
-    </script>
+    
 </head>
 <body>
     <div id="wrapper">
@@ -111,5 +88,45 @@
             ?>
         </main>
     </div>
+
+    <script type="text/javascript">
+            function showModalWin(date, time) {
+ 
+                var darkLayer = document.createElement('div'); // слой затемнения
+                darkLayer.id = 'shadow'; // id чтобы подхватить стиль
+                document.body.appendChild(darkLayer); // включаем затемнение
+ 
+                var modalWin = document.getElementById('popupWin'); // находим наше "окно"
+                modalWin.style.display = 'block'; // "включаем" его
+                document.getElementById('dateTime').value =  date + " " + time;
+
+ 
+                darkLayer.onclick = function () {  // при клике на слой затемнения все исчезнет
+                    darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение
+                    modalWin.style.display = 'none'; // делаем окно невидимым
+                    return false;
+                };
+            }
+
+
+            function showLayer(typeLayer){
+                var Layers = timeTable.getElementsByClassName(typeLayer);
+                var LayersLength = Layers.length;
+
+                for(var i=0; i < LayersLength; i++){
+                    Layers[i].style.display = 'block';
+                }
+            }
+
+            function cancel(typeLayer){
+                var Layers = timeTable.getElementsByClassName(typeLayer);
+                var LayersLength = Layers.length;
+
+                for(var i=0; i < LayersLength; i++){
+                    Layers[i].style.display = 'none';
+                }
+            }
+    </script>
+
 </body>
 </html>
