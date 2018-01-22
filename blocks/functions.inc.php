@@ -117,7 +117,7 @@
             echo '<div class="editMenu">';
             echo '<button class="btn changeBtn" onclick="showLayer(\'changeTime\');">Изменить</button>';
             echo '<button class="btn deleteBtn" onclick="showLayer(\'deleteTime\');">Удалить</button>';
-            echo '<button class="btn" onclick="cancel();">Отмена</button>';
+            echo '<button class="btn" id="btnCancel">Отмена</button>';
             echo '</div>';
         }
 

@@ -108,14 +108,23 @@
                 };
             }
 
+            var flag = false;
 
             function showLayer(typeLayer){
+                if(flag){
+                    document.getElementById('btnCancel').click();
+                }
+
                 var Layers = timeTable.getElementsByClassName(typeLayer);
                 var LayersLength = Layers.length;
 
                 for(var i=0; i < LayersLength; i++){
                     Layers[i].style.display = 'block';
                 }
+                var cancl = document.getElementById('btnCancel');
+                cancl.setAttribute('onclick', 'cancel(\''+typeLayer+'\');');
+
+                flag = true;
             }
 
             function cancel(typeLayer){
