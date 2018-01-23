@@ -4,6 +4,7 @@
 
     $data = $_POST;
 
+    //добавление записи расписания
     if(isset($data['addTime'])){
         $schedule = R::dispense('schedule');
 
@@ -17,6 +18,29 @@
 
         header("Location: ".$_SERVER['PHP_SELF'].'?room='.$data['room']);
     }
+
+    //удаление записи расписания
+    if(isset($data['deleteTime'])){
+        R::exec('DELETE FROM schedule WHERE id='.$data['idTime']);
+
+        header("Location: ".$_SERVER['PHP_SELF'].'?room='.$data['room']);
+    }
+
+    //изменение записи расписания
+    if(isset($data['EditTime'])){
+        $schedul = R::load('schedule', $data['idEdit']);
+
+        $schedul->date = $data['dateTimeEdit'];
+        $schedul->lecturer = $data['FIOEdit'];
+        $schedul->group = $data['groupEdit'];
+        $schedul->subject = $data['subjectEdit'];
+        $schedul->id_room = $data['room'];
+        
+        R::store($schedul);
+        
+        header("Location: ".$_SERVER['PHP_SELF'].'?room='.$data['room']);
+    }
+
     
     if( isset($data['signIn']) or isset($data['signOut'])){
         include('blocks/authorization.inc.php');
@@ -90,8 +114,55 @@
     </div>
 
     <script type="text/javascript">
-            function showModalWin(date, time) {
+            
+            
+            function showEditWin(idS, dateS, lecturerS, groupS, subjectS) {
+                var darkLayer = document.createElement('div'); // слой затемнения
+                darkLayer.id = 'shadow'; // id чтобы подхватить стиль
+                document.body.appendChild(darkLayer); // включаем затемнение
  
+                var modalWin = document.getElementById('editWin'); // находим наше "окно"
+                modalWin.style.display = 'block'; // "включаем" его
+                document.getElementById('idEdit').value =  idS;
+                document.getElementById('dateTimeEdit').value =  dateS;
+                document.getElementById('FIOEdit').value =  lecturerS;
+                document.getElementById('groupEdit').value =  groupS;
+                document.getElementById('subjectEdit').value =  subjectS;idEdit
+
+                darkLayer.onclick = function () {  // при клике на слой затемнения все исчезнет
+                    darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение
+                    modalWin.style.display = 'none'; // делаем окно невидимым
+                    return false;
+                };
+            }
+            
+            function showDeletelWin(idTime) {
+ 
+                var darkLayer = document.createElement('div'); // слой затемнения
+                darkLayer.id = 'shadow'; // id чтобы подхватить стиль
+                document.body.appendChild(darkLayer); // включаем затемнение
+ 
+                var modalWin = document.getElementById('deleteWin'); // находим наше "окно"
+                modalWin.style.display = 'block'; // "включаем" его
+                document.getElementById('idTime').value =  idTime;
+
+                darkLayer.onclick = function () {  // при клике на слой затемнения все исчезнет
+                    darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение
+                    modalWin.style.display = 'none'; // делаем окно невидимым
+                    return false;
+                };
+
+                var btnNo = document.getElementById('Noo');
+                btnNo.onclick = function () {  // при клике на слой затемнения все исчезнет
+                    darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение
+                    modalWin.style.display = 'none'; // делаем окно невидимым
+                    return false;
+                };
+            }
+            
+            
+            
+            function showModalWin(date, time) {
                 var darkLayer = document.createElement('div'); // слой затемнения
                 darkLayer.id = 'shadow'; // id чтобы подхватить стиль
                 document.body.appendChild(darkLayer); // включаем затемнение
@@ -99,7 +170,6 @@
                 var modalWin = document.getElementById('popupWin'); // находим наше "окно"
                 modalWin.style.display = 'block'; // "включаем" его
                 document.getElementById('dateTime').value =  date + " " + time;
-
  
                 darkLayer.onclick = function () {  // при клике на слой затемнения все исчезнет
                     darkLayer.parentNode.removeChild(darkLayer); // удаляем затемнение

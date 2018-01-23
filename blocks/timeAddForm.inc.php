@@ -17,7 +17,7 @@
                         </div>
                         <div class="tableFormRow">
                             <div class="tableFormCell"> <label for="dateTime">Время</label> </div>
-                            <div class="tableFormCell "><input type="text" class="inputText" id="dateTime" name="dateTime" readonly></div>
+                            <div class="tableFormCell "><input type="text"  class="inputText" id="dateTime" name="dateTime" readonly></div>
                         </div>
                         <div class="tableFormRow">
                             <div class="tableFormCell"></div>

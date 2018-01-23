@@ -88,8 +88,8 @@
                 if($timeTable[$i][$j] != null)
                 {
                     echo '<td class="tdTable">';
-                    echo '<div class="editLayers deleteTime" style="display: none;"></div>';
-                    echo '<div class="editLayers changeTime"></div>';
+                    echo '<div class="deleteTime" onclick="showDeletelWin('.$timeTable[$i][$j]->id.');"></div>';
+                    echo '<div class="changeTime" onclick="showEditWin('.$timeTable[$i][$j]->id.', \''.$timeTable[$i][$j]->date.'\', \''.$timeTable[$i][$j]->lecturer.'\', \''.$timeTable[$i][$j]->group.'\', \''.$timeTable[$i][$j]->subject.'\');"></div>';
                     echo $timeTable[$i][$j]->lecturer.'<br>';
                     echo $timeTable[$i][$j]->group.'<br>';
                     echo $timeTable[$i][$j]->subject;
@@ -119,8 +119,12 @@
             echo '<button class="btn deleteBtn" onclick="showLayer(\'deleteTime\');">Удалить</button>';
             echo '<button class="btn" id="btnCancel">Отмена</button>';
             echo '</div>';
+
+            include('blocks/timeAddForm.inc.php');
+            include('blocks/timeDeleteForm.inc.php');
+            include('blocks/timeEditForm.inc.php');
         }
 
-        include('blocks/timeAddForm.inc.php');
+        
     }
 ?>
